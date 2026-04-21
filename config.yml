@@ -1,0 +1,4 @@
+prefix: "master"
+address: "127.0.0.1:8000"
+control_plane: "127.0.0.1:8000"
+etcd: "http://etcd:2379"

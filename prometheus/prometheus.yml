@@ -1,0 +1,23 @@
+# prometheus.yml
+global:
+  scrape_interval: 5s          # How often metrics are scraped
+  evaluation_interval: 5s      # How often rules are evaluated
+
+# Scrape configuration
+scrape_configs:
+
+  # ----------------------------
+  # Go application metrics
+  # ----------------------------
+  - job_name: 'my-go-app'
+    metrics_path: /metrics        # Default for Prometheus client
+    static_configs:
+      - targets: ['app:8000']  # Docker container name and port
+
+  # ----------------------------
+  # Traefik metrics
+  # ----------------------------
+  - job_name: 'traefik'
+    metrics_path: /metrics        # Traefik metrics path
+    static_configs:
+      - targets: ['traefik:8080']  # Metrics entrypoint in your traefik.toml

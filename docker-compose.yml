@@ -1,0 +1,60 @@
+version: "3.9"
+
+services:
+  app:
+    image: golang:1.25
+    container_name: golang_app
+    working_dir: /app
+    volumes:
+      - ./:/app
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: sleep infinity
+    depends_on:
+      - etcd
+
+  etcd:
+    image: quay.io/coreos/etcd:v3.5.14
+    container_name: etcd
+    command: >
+      /usr/local/bin/etcd
+      --name etcd
+      --data-dir /etcd-data
+      --advertise-client-urls http://0.0.0.0:2379
+      --listen-client-urls http://0.0.0.0:2379
+  
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+
+  traefik:
+    image: traefik:v3.6.9
+    container_name: traefik
+    ports:
+      - "8084:80"
+      - "8081:8080"
+      - "8082:8082"
+    volumes:
+      - "./traefik/traefik.toml:/etc/traefik/traefik.toml:ro"
+    depends_on:
+     - etcd
+    networks:
+      - distributed_docker_node_default
+      - proxy
+
+networks:
+  proxy:
+    driver: bridge
+  distributed_docker_node_default:
+    external: true
