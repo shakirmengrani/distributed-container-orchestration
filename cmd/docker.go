@@ -37,9 +37,9 @@ func (docker *Docker) Create(containerConfig types.ContainerConfig) (client.Cont
 	network := &network.NetworkingConfig{EndpointsConfig: endpoints}
 	host := &container.HostConfig{
 		RestartPolicy: container.RestartPolicy{Name: container.RestartPolicyAlways},
-		// AutoRemove:    true,
+		AutoRemove:    containerConfig.AutoRemove,
 		Resources: container.Resources{
-			Memory: helper.MBToB(1024),
+			Memory: helper.MBToB(containerConfig.Memory),
 		},
 	}
 	container, err := docker.client.ContainerCreate(docker.ctx, client.ContainerCreateOptions{

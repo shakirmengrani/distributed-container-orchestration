@@ -1,0 +1,5 @@
+http:
+  middlewares:
+    content_compress:
+      compress:
+        defaultEncoding: gzip

@@ -1,0 +1,29 @@
+
+http:
+  routers:
+    app-router:
+      rule: "PathPrefix(`/`)"
+      entryPoints:
+        - websecure
+      service: app-service
+      middlewares:
+        - app-strip-prefix
+        - content_compress
+      tls:
+        certResolver: httpresolver
+
+  middlewares:
+    app-strip-prefix:
+      stripPrefix:
+        prefixes:
+          - "/app"
+
+  services:
+    app-service:
+      loadBalancer:
+        servers:
+          - url: "http://app:8000"
+        healthCheck:
+          path: /health
+          interval: 10s
+          timeout: 3s

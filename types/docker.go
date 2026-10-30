@@ -9,4 +9,6 @@ type ContainerConfig struct {
 	Port         int64               `json:"port"`
 	WorkingDir   string              `json:"workingDir"`
 	Cmd          []string            `json:"cmd"`
+	AutoRemove   bool                `json:"autoRemove"`
+	Memory       float64             `json:"memory"`	
 }

@@ -122,13 +122,13 @@ func (m *MetricsService) Collect() error {
 		return err
 	}
 
-	m.memTotal.With(prometheus.Labels{"prefix": prefix}).Set(float64(res.Mem.Total))
-	m.memUsed.With(prometheus.Labels{"prefix": prefix}).Set(float64(res.Mem.Used))
-	m.memFree.With(prometheus.Labels{"prefix": prefix}).Set(float64(res.Mem.Free))
+	m.memTotal.With(prometheus.Labels{"prefix": prefix}).Set(float64(res.Mem.Total)  / (1024 * 1024))
+	m.memUsed.With(prometheus.Labels{"prefix": prefix}).Set(float64(res.Mem.Used)  / (1024 * 1024))
+	m.memFree.With(prometheus.Labels{"prefix": prefix}).Set(float64(res.Mem.Free)  / (1024 * 1024))
 
-	m.diskTotal.With(prometheus.Labels{"prefix": prefix}).Set(float64(res.Disk.Total))
-	m.diskUsed.With(prometheus.Labels{"prefix": prefix}).Set(float64(res.Disk.Used))
-	m.diskFree.With(prometheus.Labels{"prefix": prefix}).Set(float64(res.Disk.Free))
+	m.diskTotal.With(prometheus.Labels{"prefix": prefix}).Set(float64(res.Disk.Total)  / (1024 * 1024))
+	m.diskUsed.With(prometheus.Labels{"prefix": prefix}).Set(float64(res.Disk.Used)  / (1024 * 1024))
+	m.diskFree.With(prometheus.Labels{"prefix": prefix}).Set(float64(res.Disk.Free)  / (1024 * 1024))
 
 	m.cpuTotal.With(prometheus.Labels{"prefix": prefix}).Set(float64(res.CPU.Total))
 	m.cpuFree.With(prometheus.Labels{"prefix": prefix}).Set(float64(res.CPU.Free))
